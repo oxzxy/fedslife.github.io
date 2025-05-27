@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Draggable Picture Boxes</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/7.css" />
+  <style>
+    body {
+      background: #e4e4e4;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      overflow: hidden;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      transition: background 0.5s ease;
+    }
+
+    menu {
+      margin: 0;
+      padding: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .content-wrapper {
+      padding-top: 30px; /* Makes space for the menu bar */
+      position: relative;
+      height: 100vh;
+    }
+
+    .window {
+      width: 300px;
+      position: absolute;
+      cursor: default;
+    }
+
+    .window-body img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #ccc;
+    }
+
+    .title-bar {
+      cursor: move;
+      user-select: none;
+    }
+
+    .bottom-button {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 1000;
+    }
+
+    .center-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div style="background: #ece9d8; padding: 1px 4px; position: fixed; top: 0; left: 0; right: 0; z-index: 999;">
+    <ul role="menubar" style="margin: 0; padding: 0; display: flex; gap: 0px; list-style: none;">
+      <li role="menuitem" style="cursor: pointer;">File</li>
+      <li role="menuitem" style="cursor: pointer;">Edit</li>
+      <li role="menuitem" style="cursor: pointer;">View</li>
+      <li role="menuitem" style="cursor: pointer;">Help</li>
+    </ul>
+  </div>
+  
+  <div class="content-wrapper">
+
+    <!-- Centered Text -->
+    <div class="center-text">
+      my favorite drugs are ketamine, LSD, and alot of weed ^w^
+    </div>
+
+    <!-- Window 1 -->
+    <div class="window active" id="window1" style="left: 50px; top: 50px;">
+      <div class="title-bar" onclick="alert('Picture 1 clicked!')">
+        <div class="title-bar-text">loadout</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <img src="images/kety.jpg" alt="" />
+      </div>
+    </div>
+
+    <!-- Window 2 -->
+    <div class="window active" id="window2" style="left: 400px; top: 50px;">
+      <div class="title-bar" >
+        <div class="title-bar-text">smokedope2016</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <img src="images/sd2016.gif" alt="" />
+      </div>
+    </div>
+
+    <!-- Window 3 -->
+    <div class="window active" id="window3" style="left: 750px; top: 50px;">
+      <div class="title-bar" onclick="">
+        <div class="title-bar-text">woof</div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body has-space">
+      </p>"give more furries guns, 1312 FTP 2red2smoke, trained puppygirl >w<"</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- The Click Me Button -->
+  <div class="bottom-button">
+    <button class="button" onclick="startBounce()">Click meee :3</button>
+  </div>
+
+  <script>
+    function makeDraggable(windowEl) {
+      const titleBar = windowEl.querySelector('.title-bar');
+      let isDragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      titleBar.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.title-bar-controls')) return;
+        isDragging = true;
+        offsetX = e.clientX - windowEl.offsetLeft;
+        offsetY = e.clientY - windowEl.offsetTop;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        windowEl.style.left = `${e.clientX - offsetX}px`;
+        windowEl.style.top = `${e.clientY - offsetY}px`;
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+    }
+
+    makeDraggable(document.getElementById('window1'));
+    makeDraggable(document.getElementById('window2'));
+    makeDraggable(document.getElementById('window3'));
+
+    let bounceInterval;
+    function startBounce() {
+        alert("woof woof woof bark >w<")
+
+
+      clearInterval(bounceInterval);
+
+      // Change background to the gif when button clicked
+      document.body.style.backgroundImage = "url('images/200w.gif')";
+
+      const windows = [
+        {
+          el: document.getElementById('window1'),
+          dx: 2,
+          dy: 2,
+        },
+        {
+          el: document.getElementById('window2'),
+          dx: 3,
+          dy: 3,
+        },
+        {
+          el: document.getElementById('window3'),
+          dx: 2,
+          dy: 3,
+        },
+      ];
+
+      bounceInterval = setInterval(() => {
+        windows.forEach((win) => {
+          const el = win.el;
+          const maxX = window.innerWidth - el.offsetWidth;
+          const maxY = window.innerHeight - el.offsetHeight;
+
+          let left = el.offsetLeft + win.dx;
+          let top = el.offsetTop + win.dy;
+
+          if (left <= 0 || left >= maxX) win.dx *= -1;
+          if (top <= 0 || top >= maxY) win.dy *= -1;
+
+          el.style.left = `${el.offsetLeft + win.dx}px`;
+          el.style.top = `${el.offsetTop + win.dy}px`;
+        });
+      }, 10);
+    }
+  </script>
+
+</body>
+</html>
